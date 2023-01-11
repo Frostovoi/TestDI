@@ -1,5 +1,6 @@
 package android.test.testciceronedi
 
+import android.content.Context
 import android.os.Bundle
 import android.test.testciceronedi.databinding.FragmentItemBinding
 import android.view.LayoutInflater
@@ -7,15 +8,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import java.util.*
-
+import javax.inject.Inject
 
 
 class FragmentItem : Fragment(){
 
     private var _binding: FragmentItemBinding? = null
     private val binding get() = _binding!!
+
+
+    @Inject
+    internal lateinit var navigation: Navigation
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        requireActivity().appComponent.inject(this)
+    }
 
 
     override fun onCreateView(
@@ -30,7 +42,6 @@ class FragmentItem : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val navigation = requireContext().appComponent.navigation
         binding.uuid.text = UUID.randomUUID().toString()
         val counter = arguments?.getInt(COUNTER_ARG) ?: 0
         binding.counter.text = counter.toString()

@@ -15,23 +15,16 @@ class App : Application() {
 
     lateinit var appComponent: AppComponent
 
-    @Inject
-    lateinit var cicerone: Cicerone<Router>
-    @Inject
-    lateinit var router: Router
-    @Inject
-    lateinit var navigatorHolder: NavigatorHolder
+
 
 
     override fun onCreate() {
         super.onCreate()
-
             appComponent = DaggerAppComponent.builder().build()
 
 
         INSTANCE = this
 
-        NAVIGATION = Navigation(router)
     }
 
 
@@ -39,7 +32,6 @@ class App : Application() {
         internal lateinit var INSTANCE: App
             private set
 
-        internal lateinit var NAVIGATION: Navigation
 
     }
 }

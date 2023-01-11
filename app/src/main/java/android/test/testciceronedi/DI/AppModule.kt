@@ -1,22 +1,19 @@
 package android.test.testciceronedi.DI
 
-import android.content.Context
-import android.test.testciceronedi.MainActivity
+
 import android.test.testciceronedi.Navigation
-import android.test.testciceronedi.R
-import androidx.fragment.app.FragmentActivity
 import com.github.terrakok.cicerone.Cicerone
-import com.github.terrakok.cicerone.Navigator
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
-import com.github.terrakok.cicerone.androidx.AppNavigator
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 @Module
 object AppModule {
 
     @Provides
+    @Singleton
     fun provideCicerone(): Cicerone <Router> = Cicerone.create()
 
     @Provides

@@ -11,23 +11,25 @@ import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
 import dagger.BindsInstance
 import dagger.Component
+import javax.inject.Singleton
 
 
 @Component(modules = [AppModule::class])
+@Singleton
 interface AppComponent {
-    val cicerone: Cicerone<Router>
-    val router: Router
-    val navigatorHolder: NavigatorHolder
-    val navigation: Navigation
+//
+//    val cicerone: Cicerone<Router>
+//    val router: Router
+//    val navigatorHolder: NavigatorHolder
+//    val navigation: Navigation
     //val navigator: Navigator
 
     fun inject(activity: MainActivity)
 
+    fun inject(fragmentItem: FragmentItem)
+
     @Component.Builder
     interface Builder {
-
-        @BindsInstance
-        fun activity(activity: FragmentActivity): Builder
 
         fun build(): AppComponent
 

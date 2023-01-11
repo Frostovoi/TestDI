@@ -3,10 +3,11 @@ package android.test.testciceronedi
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.test.testciceronedi.DI.AppComponent
-import android.test.testciceronedi.DI.DaggerAppComponent
+
 import android.util.Log
 import com.github.terrakok.cicerone.Cicerone
 import com.github.terrakok.cicerone.Navigator
+import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import javax.inject.Inject
 
@@ -19,6 +20,12 @@ class MainActivity : AppCompatActivity() {
 
     private val navigator: Navigator = AppNavigator(this, R.id.fragment_container)
 
+    @Inject
+    internal lateinit var navHolder: NavigatorHolder
+
+    @Inject
+    internal lateinit var navigation: Navigation
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,19 +34,19 @@ class MainActivity : AppCompatActivity() {
 
         appComponent.inject(this)
         if (savedInstanceState == null){
-            App.NAVIGATION.openScreen(0)
+            navigation.openScreen(0)
         }
         Log.d(TAG, "MainActivity")
     }
 
     override fun onResume() {
         super.onResume()
-        appComponent.navigatorHolder.setNavigator(navigator)
+        navHolder.setNavigator(navigator)
     }
 
     override fun onPause() {
         super.onPause()
-        appComponent.navigatorHolder.removeNavigator()
+        navHolder.removeNavigator()
 
     }
 
