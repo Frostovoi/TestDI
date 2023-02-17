@@ -6,22 +6,33 @@ import android.test.testciceronedi.databinding.FragmentItemBinding
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import com.github.terrakok.cicerone.NavigatorHolder
-import com.github.terrakok.cicerone.androidx.AppNavigator
-import java.util.*
+import androidx.lifecycle.ViewModelProvider
 import javax.inject.Inject
 
 
+private const val TAG = "FragmentItem"
+
+
 class FragmentItem : Fragment(){
+
+
 
     private var _binding: FragmentItemBinding? = null
     private val binding get() = _binding!!
 
 
     @Inject
+    lateinit var factory : StateViewModel.Factory
+
+    @Inject
     internal lateinit var navigation: Navigation
+
+    private val viewModel: StateViewModel by lazy {
+        ViewModelProvider(this, factory)[StateViewModel::class.java]
+    }
+
+
 
 
     override fun onAttach(context: Context) {
@@ -42,14 +53,20 @@ class FragmentItem : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.uuid.text = UUID.randomUUID().toString()
-        val counter = arguments?.getInt(COUNTER_ARG) ?: 0
-        binding.counter.text = counter.toString()
+
+        viewModel.liveDataCounter.observe(viewLifecycleOwner) {
+            binding.counter.text = viewModel.liveDataCounter.value?.getValue().toString()
+        }
+
+
+        binding.uuid.text = viewModel.uuid.toString()
         binding.forwardButton.setOnClickListener {
-            navigation.openScreen(counter + 1)
+            updateCounter()
+            navigation.openScreen()
         }
         binding.backButton.setOnClickListener {
-
+            updateCounter()
+            navigation.backScreen()
         }
 
     }
@@ -59,13 +76,14 @@ class FragmentItem : Fragment(){
         _binding = null
     }
 
+    private fun updateCounter() {
+        viewModel.counter.setValue(viewModel.counter.getValue() + 1)
+    }
+
 
     companion object {
-        private const val COUNTER_ARG = "COUNTER_ARG"
+        fun newInstance():  FragmentItem = FragmentItem()
 
-        fun newInstance(counter: Int):  FragmentItem = FragmentItem().apply {
-            arguments = bundleOf(COUNTER_ARG to counter)
-        }
     }
 
 

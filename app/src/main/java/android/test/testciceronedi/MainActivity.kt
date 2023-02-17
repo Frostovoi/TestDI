@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
         appComponent.inject(this)
         if (savedInstanceState == null){
-            navigation.openScreen(0)
+            navigation.openScreen()
         }
         Log.d(TAG, "MainActivity")
     }

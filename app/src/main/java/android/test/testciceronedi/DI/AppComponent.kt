@@ -17,12 +17,6 @@ import javax.inject.Singleton
 @Component(modules = [AppModule::class])
 @Singleton
 interface AppComponent {
-//
-//    val cicerone: Cicerone<Router>
-//    val router: Router
-//    val navigatorHolder: NavigatorHolder
-//    val navigation: Navigation
-    //val navigator: Navigator
 
     fun inject(activity: MainActivity)
 
